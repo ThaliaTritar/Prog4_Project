@@ -74,8 +74,8 @@ void dae::GameObject::SetParent(GameObject* parent,bool keepWorldPosition)
 	//Remove itself from the previous parent (RemoveChild ? )
 	if (m_parent)	
 		m_parent->m_children.erase(
-			std::remove(	m_parent->m_children.begin(), m_parent->m_children.end(), this),
-							m_parent->m_children.end()	);
+							std::remove( m_parent->m_children.begin(), m_parent->m_children.end(), this ),
+							m_parent->m_children.end()		);
 
 	//Set the given parent on itself.
 	m_parent = parent;
@@ -117,6 +117,9 @@ bool dae::GameObject::IsChild(GameObject* object) const
 void dae::GameObject::SetPositionDirty()
 {
 	m_positionIsDirty = true;
+
+	for (auto& child : m_children)
+		child->SetPositionDirty();
 }
 
 void dae::GameObject::SetLocalPosition(const glm::vec3& pos)
